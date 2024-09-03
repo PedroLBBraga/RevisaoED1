@@ -1,0 +1,113 @@
+#include <stdio.h>
+#define MAX_SIZE 10
+
+int lista[MAX_SIZE];
+int tamanho = 0;
+
+// Função para inserir um elemento na lista
+void inserir(int elemento) {
+    if (tamanho < MAX_SIZE) {
+        lista[tamanho++] = elemento;
+    } else {
+        printf("Lista cheia!\n");
+    }
+}
+
+// Função para remover um elemento da lista pelo índice
+void remover(int index) {
+    if (index < 0 || index >= tamanho) {
+        printf("Índice inválido!\n");
+    } else {
+        for (int i = index; i < tamanho - 1; i++) {
+            lista[i] = lista[i + 1];
+        }
+        tamanho--;
+    }
+}
+
+// Função para imprimir os elementos da lista
+void imprimir() {
+    printf("Elementos da lista:\n");
+    for (int i = 0; i < tamanho; i++) {
+        printf("%d ", lista[i]);
+    }
+    printf("\n");
+}
+
+// Função para buscar um elemento na lista
+int buscar(int elemento) {
+    for (int i = 0; i < tamanho; i++) {
+        if (lista[i] == elemento) {
+            return i; // Retorna o índice do elemento
+        }
+    }
+    return -1; // Retorna -1 se o elemento não for encontrado
+}
+
+// Função para inverter a lista
+void inverter() {
+    for (int i = 0; i < tamanho / 2; i++) {
+        int temp = lista[i];
+        lista[i] = lista[tamanho - 1 - i];
+        lista[tamanho - 1 - i] = temp;
+    }
+}
+
+// Função para encontrar o valor máximo na lista
+int maximo() {
+    if (tamanho == 0) return -1; // Lista vazia
+    int max = lista[0];
+    for (int i = 1; i < tamanho; i++) {
+        if (lista[i] > max) {
+            max = lista[i];
+        }
+    }
+    return max;
+}
+
+// Função para encontrar o valor mínimo na lista
+int minimo() {
+    if (tamanho == 0) return -1; // Lista vazia
+    int min = lista[0];
+    for (int i = 1; i < tamanho; i++) {
+        if (lista[i] < min) {
+            min = lista[i];
+        }
+    }
+    return min;
+}
+
+// Função para ordenar a lista usando bubble sort
+void ordenar() {
+    for (int i = 0; i < tamanho - 1; i++) {
+        for (int j = 0; j < tamanho - 1 - i; j++) {
+            if (lista[j] > lista[j + 1]) {
+                int temp = lista[j];
+                lista[j] = lista[j + 1];
+                lista[j + 1] = temp;
+            }
+        }
+    }
+}
+
+int main() {
+    inserir(30);
+    inserir(20);
+    inserir(10);
+    imprimir();
+
+    printf("Posição do elemento 20: %d\n", buscar(20));
+
+    inverter();
+    printf("Lista invertida:\n");
+    imprimir();
+
+    printf("Máximo: %d\n", maximo());
+    printf("Mínimo: %d\n", minimo());
+
+    ordenar();
+    printf("Lista ordenada:\n");
+    imprimir();
+
+    return 0;
+}
