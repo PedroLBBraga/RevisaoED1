@@ -1,0 +1,45 @@
+#include <stdio.h>
+#include <stdlib.h> // Necessário para o uso de malloc e free
+
+int main() {
+    int n, i, j, soma = 0;
+    int **matriz;
+
+    // Solicita o tamanho da matriz ao usuário
+    printf("Digite o tamanho da matriz quadrada (n x n): ");
+    scanf("%d", &n);
+
+    // Aloca memória para a matriz
+    matriz = (int **)malloc(n * sizeof(int *)); // Aloca memória para as linhas
+    for (i = 0; i < n; i++) {
+        matriz[i] = (int *)malloc(n * sizeof(int)); // Aloca memória para as colunas de cada linha
+    }
+
+    // Verifica se a alocação foi bem-sucedida
+    if (matriz == NULL) {
+        printf("Erro ao alocar memória!\n");
+        return 1; // Termina o programa em caso de erro
+    }
+
+    // Solicita ao usuário os elementos da matriz
+    printf("Insira os elementos da matriz %dx%d:\n", n, n);
+    for (i = 0; i < n; i++) {
+        for (j = 0; j < n; j++) {
+            scanf("%d", &matriz[i][j]);
+            if (i == j) {
+                soma += matriz[i][j]; // Soma os elementos da diagonal principal
+            }
+        }
+    }
+
+    // Imprime a soma da diagonal principal
+    printf("Soma dos elementos da diagonal principal: %d\n", soma);
+
+    // Libera a memória alocada
+    for (i = 0; i < n; i++) {
+        free(matriz[i]); // Libera as colunas de cada linha
+    }
+    free(matriz); // Libera as linhas
+
+    return 0;
+}
