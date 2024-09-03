@@ -1,0 +1,85 @@
+#include <stdio.h>
+#include <stdlib.h> // Necessário para usar malloc e realloc
+
+#define MAX_SIZE 3  // Define a capacidade inicial da pilha
+
+int* pilha;  // Ponteiro para a pilha (para permitir expansão dinâmica)
+int topo = -1;  // Variável para controlar o índice do topo da pilha
+int capacidade = MAX_SIZE;  // Armazena a capacidade atual da pilha
+
+// Função para inserir um elemento na pilha
+void push(int elemento) {
+    if (topo < capacidade - 1) {  // Verifica se há espaço na pilha
+        pilha[++topo] = elemento;  // Incrementa o topo e insere o elemento
+    } else {
+        printf("Pilha cheia! Expandindo capacidade...\n");
+        // Expande dinamicamente a pilha quando cheia
+        capacidade *= 2;  // Dobra a capacidade
+        pilha = (int*)realloc(pilha, capacidade * sizeof(int));  // Realoca memória para a nova capacidade
+        if (pilha == NULL) {
+            printf("Erro ao expandir a pilha.\n");
+            exit(1);  // Sai do programa em caso de erro na alocação de memória
+        }
+        pilha[++topo] = elemento;  // Insere o novo elemento
+    }
+}
+
+// Função para remover o elemento do topo da pilha
+int pop() {
+    if (topo == -1) {  // Verifica se a pilha está vazia
+        printf("Pilha vazia!\n");
+        return -1;  // Retorna -1 para indicar que a pilha está vazia
+    } else {
+        return pilha[topo--];  // Retorna o elemento do topo e decrementa o índice do topo
+    }
+}
+
+// Função para acessar o elemento do topo da pilha
+int top() {
+    if (topo == -1) {  // Verifica se a pilha está vazia
+        printf("Pilha vazia!\n");
+        return -1;  // Retorna -1 se a pilha estiver vazia
+    } else {
+        return pilha[topo];  // Retorna o elemento no topo da pilha
+    }
+}
+
+// Função para imprimir todos os elementos da pilha
+void imprimir() {
+    printf("Conteúdo da pilha:\n");
+    for (int i = topo; i >= 0; i--) {  // Percorre a pilha do topo até a base
+        printf("%d ", pilha[i]);  // Imprime cada elemento
+    }
+    printf("\n");
+}
+
+// Função para verificar se a pilha está vazia
+int isEmpty() {
+    return topo == -1;  // Retorna 1 (true) se a pilha estiver vazia, caso contrário retorna 0 (false)
+}
+
+int main() {
+    pilha = (int*)malloc(capacidade * sizeof(int));  // Aloca memória inicial para a pilha
+    if (pilha == NULL) {
+        printf("Erro ao alocar memória.\n");
+        return 1;  // Sai do programa em caso de erro na alocação de memória
+    }
+
+    push(10);  // Insere 10 na pilha
+    push(20);  // Insere 20 na pilha
+    push(30);  // Insere 30 na pilha
+    imprimir();  // Imprime o conteúdo da pilha
+
+    printf("Elemento no topo: %d\n", top());  // Exibe o elemento no topo
+    printf("Elemento removido: %d\n", pop());  // Remove e exibe o elemento do topo
+    imprimir();  // Imprime o conteúdo da pilha após a remoção
+
+    if (isEmpty()) {  // Verifica se a pilha está vazia
+        printf("A pilha está vazia.\n");
+    } else {
+        printf("A pilha não está vazia.\n");
+    }
+
+    free(pilha);  // Libera a memória alocada para a pilha
+    return 0;
+}
